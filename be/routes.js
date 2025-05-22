@@ -1,35 +1,35 @@
-const Router = require("@koa/router")
+const Router = require('@koa/router')
 
-const router = new Router();
+const router = new Router()
 
-router.post("/games", async (ctx) => {
+router.post('/games', async (ctx) => {
   ctx.body = {
-    message: "Hello World"
+    message: 'Hello World'
   }
 })
 
-router.get("/games", async (ctx) => {
+router.get('/games', async (ctx) => {
   ctx.body = {
-    message: "Hello World"
+    message: 'Hello World'
   }
 })
 
-router.get("/games/:id", async (ctx) => {
+router.get('/games/:id', async (ctx) => {
   ctx.body = {
-    message: "Hello World"
+    message: 'Hello World'
   }
 })
 
-router.post("/games/:id/play", async (ctx) => {
+router.post('/games/:id/play', async (ctx) => {
   ctx.body = {
-    message: "Hello World"
+    message: 'Hello World'
   }
 })
 
-router.post("/games/:id/roll", async (ctx) => {
+router.post('/games/:id/roll', async (ctx) => {
   ctx.body = {
-    message: "Hello World"
+    message: 'Hello World'
   }
 })
 
-module.exports = router;
+module.exports = router.routes()

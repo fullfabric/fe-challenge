@@ -1,10 +1,12 @@
-const { Router } = require("@koa/router");
+const { Router } = require('@koa/router')
+
+const Game = require('../models/game')
 
 const router = new Router()
 
-router.get("/", async (ctx) => {
-  const games = await Game.findAll();
-  ctx.body = games;
-});
+router.get('/', async (ctx) => {
+  const games = await Game.findAll()
+  ctx.body = games
+})
 
-module.exports = router;
+module.exports = router

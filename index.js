@@ -1,3 +1,3 @@
-const be = require("./be")
+require('./be/server')
 
-console.log("Hello CodeSandbox");
+console.log('Hello CodeSandbox')
