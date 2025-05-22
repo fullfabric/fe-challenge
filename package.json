@@ -1,0 +1,20 @@
+{
+  "name": "nodejs-sandbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch index.js"
+  },
+  "keywords": [],
+  "author": "Ives van Hoorne",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "@koa/router": "^13.1.0",
+    "koa": "^3.0.0",
+    "koa-body": "^6.0.1",
+    "lodash": "^4.17.21",
+    "uuid": "^11.1.0"
+  }
+}
