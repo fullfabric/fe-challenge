@@ -1,18 +1,26 @@
 const { DataTypes, Model } = require('sequelize')
 
-const Game = require('./game')
-const Player = require('./player')
 const sequelize = require('../sequelize')
+const { isNil } = require('lodash')
+const { PlayerAlreadyPlayed, PlayerNotPartOfTurn } = require('./turn/errors')
 
 class Turn extends Model {
-  attack() {
-    if (this.attack) throw new Error('Attack already made')
-    this.attack = Math.floor(Math.random() * 6) + 1
+  roll(playerId, dieSize) {
+    if (this.attackerId === playerId) {
+      if (!isNil(this.attackRoll)) throw new PlayerAlreadyPlayed(playerId)
+      return (this.attackRoll = rollDie(dieSize))
+    }
+
+    if (this.defenderId === playerId) {
+      if (!isNil(this.defenseRoll)) throw new PlayerAlreadyPlayed(playerId)
+      return (this.defenseRoll = rollDie(dieSize))
+    }
+
+    throw new PlayerNotPartOfTurn(playerId, this.id)
   }
 
-  defend() {
-    if (this.defend) throw new Error('Defend already made')
-    this.defend = Math.floor(Math.random() * 6) + 1
+  isFinished() {
+    return !isNil(this.attackRoll) && !isNil(this.defenseRoll)
   }
 }
 
@@ -23,27 +31,6 @@ Turn.init(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    gameId: {
-      type: DataTypes.UUID,
-      references: {
-        model: Game,
-        key: 'id'
-      }
-    },
-    attackerId: {
-      type: DataTypes.UUID,
-      references: {
-        model: Player,
-        key: 'id'
-      }
-    },
-    defenderId: {
-      type: DataTypes.UUID,
-      references: {
-        model: Player,
-        key: 'id'
-      }
-    },
     attackRoll: DataTypes.INTEGER,
     defenseRoll: DataTypes.INTEGER
   },
@@ -51,3 +38,7 @@ Turn.init(
 )
 
 module.exports = Turn
+
+function rollDie(dieSize) {
+  return Math.floor(Math.random() * dieSize) + 1
+}

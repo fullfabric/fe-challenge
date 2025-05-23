@@ -1,35 +1,13 @@
-const { last } = require('lodash')
 const { DataTypes, Model } = require('sequelize')
-
-const Player = require('./player')
-const { GameIsFullError } = require('./game/errors')
 
 const sequelize = require('../sequelize')
 class Game extends Model {
-  addPlayer(player) {
-    if (this.attacker === null) {
-      this.attacker = player
-    } else if (this.defender === null) {
-      this.defender = player
-    } else {
-      throw new GameIsFullError()
-    }
-  }
-
-  currentRole(player) {
-    if (this.attacker === player) {
-      return 'attacker'
-    } else if (this.defender === player) {
-      return 'defender'
-    }
-  }
-
-  currentTurn() {
-    return last(this.turns)
+  isStarted() {
+    return !!this.startedAt
   }
 
   isFinished() {
-    return !!this.winner
+    return !!this.winnerId
   }
 }
 
@@ -40,26 +18,16 @@ Game.init(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    attackerId: {
-      type: DataTypes.UUID,
-      references: {
-        model: Player,
-        key: 'id'
-      }
+    startedAt: DataTypes.DATE,
+    dieSize: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 6
     },
-    defenderId: {
-      type: DataTypes.UUID,
-      references: {
-        model: Player,
-        key: 'id'
-      }
-    },
-    winnerId: {
-      type: DataTypes.UUID,
-      references: {
-        model: Player,
-        key: 'id'
-      }
+    startingHP: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 20
     }
   },
   { sequelize, modelName: 'Game' }

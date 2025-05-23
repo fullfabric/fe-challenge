@@ -2,16 +2,12 @@ const { DataTypes, Model } = require('sequelize')
 const sequelize = require('../sequelize')
 
 class Player extends Model {
-  constructor(name, { initialHealth = 20 } = {}) {
-    super()
-  }
-
   isAlive() {
-    return this.health > 0
+    return this.hp > 0
   }
 
   takeDamage(damage) {
-    this.health -= damage
+    this.hp -= damage
   }
 }
 
