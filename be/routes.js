@@ -14,4 +14,9 @@ router.get('/openapi.yaml', async (ctx) => {
   ctx.body = await fs.readFile(path.join(__dirname, '..', 'docs', 'openapi.yaml'), 'utf8')
 })
 
+router.get('/docs', async (ctx) => {
+  ctx.type = 'text/html'
+  ctx.body = await fs.readFile(path.join(__dirname, '..', 'docs', 'index.html'), 'utf8')
+})
+
 module.exports = router.routes()
