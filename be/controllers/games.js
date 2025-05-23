@@ -4,6 +4,8 @@ const sequelize = require('../sequelize')
 const { existsOr404 } = require('./utils')
 const { PlayerAlreadyPlayed, PlayerNotPartOfTurn } = require('../models/turn/errors')
 
+const FULL_GAME_OPTIONS = { include: ['players', 'turns'], order: [['turns', 'createdAt', 'ASC']] }
+
 async function createGame(ctx) {
   const game = await Game.create(ctx.request.body)
   ctx.body = { game }
@@ -15,7 +17,7 @@ async function listGames(ctx) {
 }
 
 async function showGame(ctx) {
-  const game = await Game.findByPk(ctx.params.id, { include: ['players'] }) // TODO: include turns
+  const game = await Game.findByPk(ctx.params.id, FULL_GAME_OPTIONS)
 
   existsOr404(ctx, game)
 
@@ -63,14 +65,11 @@ async function startGame(ctx) {
     await game.save({ transaction: t })
   })
 
-  ctx.body = { game: await game.reload({ include: ['players', 'turns'] }) }
+  ctx.body = { game: await game.reload(FULL_GAME_OPTIONS) }
 }
 
 async function roll(ctx) {
-  const game = await Game.findByPk(ctx.params.id, {
-    include: ['players', 'turns'],
-    order: [['turns', 'createdAt', 'ASC']]
-  })
+  const game = await Game.findByPk(ctx.params.id, FULL_GAME_OPTIONS)
 
   existsOr404(ctx, game)
 
@@ -99,7 +98,7 @@ async function roll(ctx) {
 
     ctx.body = {
       roll,
-      game: await game.reload({ include: ['players', 'turns'], order: [['turns', 'createdAt', 'ASC']] })
+      game: await game.reload(FULL_GAME_OPTIONS)
     }
   } catch (error) {
     if (error instanceof PlayerAlreadyPlayed) {

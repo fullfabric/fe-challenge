@@ -17,8 +17,7 @@ app.use(async (ctx, next) => {
 })
 
 app.use(errorHandler())
-// Body parsing
-app.use(koaBody())
+app.use(koaBody()) // Body parsing
 app.use(routes)
 
 app.on('error', (err, ctx) => {

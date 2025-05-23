@@ -1,0 +1,263 @@
+openapi: 3.0.0
+info:
+  title: Games API
+  version: 1.0.0
+  description: API for managing game sessions and player interactions
+
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
+paths:
+  /games:
+    get:
+      summary: List all games
+      operationId: listGames
+      responses:
+        '200':
+          description: List of games retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  games:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Game'
+
+    post:
+      summary: Create a new game
+      operationId: createGame
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGameRequest'
+      responses:
+        '200':
+          description: Game created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  game:
+                    $ref: '#/components/schemas/Game'
+
+  /games/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Get game details
+      operationId: showGame
+      responses:
+        '200':
+          description: Game details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  game:
+                    $ref: '#/components/schemas/Game'
+        '404':
+          description: Game not found
+
+  /games/{id}/join:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      summary: Join an existing game
+      operationId: joinGame
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JoinGameRequest'
+      responses:
+        '200':
+          description: Successfully joined the game
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  game:
+                    $ref: '#/components/schemas/Game'
+                  yourId:
+                    type: string
+                    format: uuid
+        '400':
+          description: Game is full
+        '404':
+          description: Game not found
+
+  /games/{id}/start:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      summary: Start a game
+      operationId: startGame
+      responses:
+        '200':
+          description: Game started successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  game:
+                    $ref: '#/components/schemas/Game'
+        '400':
+          description: Not enough players or game already started
+        '404':
+          description: Game not found
+
+  /games/{id}/roll:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      summary: Roll the dice for a turn
+      operationId: roll
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RollRequest'
+      responses:
+        '200':
+          description: Roll successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  roll:
+                    type: integer
+                    minimum: 1
+                  game:
+                    $ref: '#/components/schemas/Game'
+        '400':
+          description: Invalid roll request (game not started, already played, etc.)
+        '404':
+          description: Game not found
+
+components:
+  schemas:
+    Game:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        dieSize:
+          type: integer
+          minimum: 1
+          maximum: 100
+        startingHP:
+          type: integer
+          minimum: 1
+          maximum: 100
+        startedAt:
+          type: string
+          format: date-time
+          nullable: true
+        winnerId:
+          type: string
+          format: uuid
+          nullable: true
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/Player'
+        turns:
+          type: array
+          items:
+            $ref: '#/components/schemas/Turn'
+
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        hp:
+          type: integer
+          minimum: 0
+
+    Turn:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        attackerId:
+          type: string
+          format: uuid
+        defenderId:
+          type: string
+          format: uuid
+        attackRoll:
+          type: integer
+          nullable: true
+        defenseRoll:
+          type: integer
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+
+    CreateGameRequest:
+      type: object
+      properties:
+        dieSize:
+          type: integer
+          minimum: 1
+          maximum: 100
+        startingHP:
+          type: integer
+          minimum: 1
+          maximum: 100
+
+    JoinGameRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+
+    RollRequest:
+      type: object
+      required:
+        - playerId
+      properties:
+        playerId:
+          type: string
+          format: uuid

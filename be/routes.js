@@ -1,34 +1,17 @@
+const fs = require('fs/promises')
+const path = require('path')
+
 const Router = require('@koa/router')
-const Joi = require('joi')
+
+const games = require('./routes/games')
 
 const router = new Router()
 
-const { createGame, joinGame, showGame, listGames, startGame, roll } = require('./controllers/games')
+router.use('/games', games)
 
-const createGameSchema = Joi.object({
-  dieSize: Joi.number().integer().min(1).max(100).optional(),
-  startingHP: Joi.number().integer().min(1).max(100).optional()
+router.get('/openapi.yaml', async (ctx) => {
+  ctx.type = 'text/yaml'
+  ctx.body = await fs.readFile(path.join(__dirname, '..', 'docs', 'openapi.yaml'), 'utf8')
 })
-
-const joinGameSchema = Joi.object({
-  name: Joi.string().required()
-})
-
-const rollSchema = Joi.object({
-  playerId: Joi.string().uuid().required()
-})
-
-// Validation middleware
-const validateBody = (schema) => async (ctx, next) => {
-  await schema.validateAsync(ctx.request.body)
-  await next()
-}
-
-router.get('/games', listGames)
-router.post('/games', validateBody(createGameSchema), createGame)
-router.get('/games/:id', showGame)
-router.post('/games/:id/join', validateBody(joinGameSchema), joinGame)
-router.post('/games/:id/start', startGame)
-router.post('/games/:id/roll', validateBody(rollSchema), roll)
 
 module.exports = router.routes()

@@ -1,9 +1,9 @@
 const request = require('supertest')
 const { v4: uuidv4 } = require('uuid')
 
-const app = require('../')
-const Game = require('../models/game')
-const Player = require('../models/player')
+const app = require('../..')
+const Game = require('../../models/game')
+const Player = require('../../models/player')
 const { first, every, map, find } = require('lodash')
 
 describe('POST /games', () => {
@@ -39,6 +39,7 @@ describe('GET /games/:id', () => {
     expect(body.game).toBeDefined()
     expect(body.game).toHaveProperty('id')
     expect(body.game).toHaveProperty('players')
+    expect(body.game).toHaveProperty('turns')
     expect(body.game).toHaveProperty('dieSize', 6)
     expect(body.game).toHaveProperty('startingHP', 20)
   })
