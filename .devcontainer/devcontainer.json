@@ -9,5 +9,15 @@
     "CODESPACE_NAME": "${localEnv:CODESPACE_NAME}",
     "GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN": "${localEnv:GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
   },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode-remote.remote-ssh"
+      ]
+    }
+  },
   "features": {}
 }
