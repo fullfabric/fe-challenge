@@ -3,7 +3,7 @@ name: API Documentation
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'be/openapi.yaml'
       - '.github/workflows/api-docs.yml'
