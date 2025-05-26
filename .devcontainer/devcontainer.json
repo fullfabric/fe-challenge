@@ -2,8 +2,7 @@
   "name": "Devcontainer",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
   "postCreateCommand": "yarn install",
-  "forwardPorts": [8080],
-  "features": {
-    "ghcr.io/devcontainers-extra/features/redis-homebrew:1": {}
-  }
+  "postAttachCommand": "npm run start",
+  "forwardPorts": [8080, 8081],
+  "features": {}
 }
