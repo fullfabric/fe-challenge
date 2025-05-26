@@ -31,6 +31,8 @@ export function App() {
           <thead>
             <tr>
               <th>ID</th>
+              <th>Die Side</th>
+              <th>Starting HP</th>
               <th>Created At</th>
             </tr>
           </thead>
@@ -40,6 +42,8 @@ export function App() {
               games.map((game) => (
                 <tr key={game.id}>
                   <td>{game.id}</td>
+                  <td>{game.dieSize}</td>
+                  <td>{game.startingHP}</td>
                   <td>{new Date(game.createdAt).toLocaleString()}</td>
                 </tr>
               ))
