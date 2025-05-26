@@ -4,7 +4,7 @@
   "postCreateCommand": "yarn install",
   "postAttachCommand": "yarn start",
   "forwardPorts": [8080, 8081],
-  "remoteEnv": {
+  "containerEnv": {
     "NODE_ENV": "development",
     "CODESPACE_NAME": "${localEnv:CODESPACE_NAME}",
     "GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN": "${localEnv:GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
