@@ -2,7 +2,7 @@
   "name": "Devcontainer",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
   "postCreateCommand": "yarn install",
-  "postAttachCommand": "npm run start",
+  "postAttachCommand": "yarn start",
   "forwardPorts": [8080, 8081],
   "features": {}
 }

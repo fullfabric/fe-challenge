@@ -39,4 +39,16 @@ You're not expected to come up with an extremely stylish UI (though you may buil
 
 ## Getting Started
 
-TBD
+### CodeSpaces
+
+The easiest way to start working on this challenge is to run it on a GitHub Codespace. This will automatically set up everything you need to run the development server, and start it when you attach a session. Browser reloading and code change watching will be set up for you.
+
+### Locally
+
+If you prefer to run this locally, you can:
+
+1. Clone the repo
+2. Install npm@20 and yarn
+3. `yarn install`
+4. `yarn start`
+5. Open a browser on http://localhost:8080

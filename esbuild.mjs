@@ -23,7 +23,6 @@ const esbuildContext = {
   bundle: true,
   sourcemap: true,
   format: 'iife',
-  // globalName: 'dicegame',
   target: ['chrome84', 'firefox78', 'safari12', 'edge44', 'opera66'],
   publicPath: '/'
 }
@@ -34,9 +33,9 @@ if (process.argv.includes('--watch')) {
   console.log(`Building and watching ${env} build...`)
 
   await ctx.watch()
-  await ctx.serve({ servedir: 'fe/dist', port: 8081, cors: { origin: 'http://localhost:8080' } })
+  await ctx.serve({ servedir: 'fe/dist', port: 8081, cors: { origin: serverHost() } })
 
-  console.log('Serving on http://localhost:8081')
+  console.log(`Serving on http://localhost:8081`)
 } else {
   console.log(`Building ${env} build...`)
 
@@ -44,4 +43,15 @@ if (process.argv.includes('--watch')) {
 
   console.log('Built.')
   process.exit(0)
+}
+
+function serverHost() {
+  const codespaceName = process.env.CODESPACE_NAME
+
+  if (codespaceName) {
+    const portForwardingDomain = process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
+    return `https://${codespaceName}-8080.${portForwardingDomain}`
+  }
+
+  return 'http://localhost:8081'
 }
