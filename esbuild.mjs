@@ -35,7 +35,7 @@ if (process.argv.includes('--watch')) {
   await ctx.watch()
   await ctx.serve({ servedir: 'fe/dist', port: 8081, cors: { origin: serverHost() } })
 
-  console.log(`Serving on http://localhost:8081`)
+  console.log(`Serving assets on http://localhost:8081 | live reloading on ${serverHost()}`)
 } else {
   console.log(`Building ${env} build...`)
 
@@ -53,5 +53,5 @@ function serverHost() {
     return `https://${codespaceName}-8080.${portForwardingDomain}`
   }
 
-  return 'http://localhost:8081'
+  return 'http://localhost:8080'
 }

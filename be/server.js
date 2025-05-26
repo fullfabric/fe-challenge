@@ -9,6 +9,6 @@ module.exports = (async () => {
   console.log('Database synced')
 
   app.listen(8080, () => {
-    console.log('Server is running on port 8080')
+    console.log('Serving API on http://localhost:8080')
   })
 })()
