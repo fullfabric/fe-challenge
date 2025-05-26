@@ -1,4 +1,5 @@
 import * as esbuild from 'esbuild'
+import fs from 'fs'
 import copyStaticFiles from 'esbuild-copy-static-files'
 import { postcssModules, sassPlugin } from 'esbuild-sass-plugin'
 
@@ -11,7 +12,8 @@ const plugins = [
     src: './fe/public',
     dest: './fe/dist',
     recursive: false
-  })
+  }),
+  setFrontendHost(serverHost().replace('8080', '8081'))
 ]
 
 const esbuildContext = {
@@ -43,6 +45,26 @@ if (process.argv.includes('--watch')) {
 
   console.log('Built.')
   process.exit(0)
+}
+
+function setFrontendHost(host) {
+  return {
+    name: 'set-frontend-host',
+    setup(build) {
+      build.onEnd(({ errors }) => {
+        if (errors.length > 0) {
+          return console.warn('[setFrontendHost] Build completed with errors, skipping setting frontend host.')
+        }
+
+        console.log('[setFrontendHost] Setting frontend host to', host, { env })
+
+        const indexFile = 'fe/dist/index.html'
+        const indexFileContent = fs.readFileSync(indexFile, 'utf-8').replaceAll(/%FRONTEND_HOST%/g, host)
+
+        fs.writeFileSync(indexFile, indexFileContent)
+      })
+    }
+  }
 }
 
 function serverHost() {
