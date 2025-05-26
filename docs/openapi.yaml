@@ -1,8 +1,25 @@
 openapi: 3.0.0
 info:
-  title: Games API
+  title: Dice Game API
   version: 1.0.0
-  description: API for managing game sessions and player interactions
+  description: |
+    This API describes the Dice Game API for the Full Fabric Frontend code interview.
+
+    The game is turn-based, strictly between two players. Players take turns attacking or defending against each-other by rolling dice; any damage dealt is decremented from the defending player's HP, until one of them reaches 0, at which point a winner is declared and the game ends.
+
+    The rules are as follows:
+
+    - A game must have two players.
+    - Each player starts with the same HP, which defaults to 20.
+    - A game is played with a single N-sided die, which defaults to 6 sides.
+    - The game starts by selecting the attacker and defender at random.
+    - Each turn, each player rolls the die once.
+    - The rolls determine the attack and defense values, depending on the player's role that turn.
+    - If the attack value is greater than the defense value, the defending player takes damage equal to the difference between the two values.
+    - After damage is dealt, and if all players are still alive (HP > 0) their roles are switched.
+    - The players continue taking turns attacking and defending until one of them dies and is declared the winner.
+
+    Below are the endpoints available to manage games, assign players, and take turns.
 
 servers:
   - url: http://localhost:8080
@@ -12,6 +29,7 @@ paths:
   /games:
     get:
       summary: List all games
+      description: Returns a list of all games in descending order of creation. Includes the game's players in the response.
       operationId: listGames
       responses:
         '200':
@@ -24,17 +42,21 @@ paths:
                   games:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Game'
+                      $ref: '#/components/schemas/ListGame'
 
     post:
       summary: Create a new game
+      description: Creates a new game with the default die size and starting HP, if these are not provided. A new Game has no players or turns, so these are not returned.
       operationId: createGame
       requestBody:
-        required: true
+        required: false
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateGameRequest'
+            example:
+              dieSize: 6
+              startingHP: 20
       responses:
         '200':
           description: Game created successfully
@@ -44,7 +66,13 @@ paths:
                 type: object
                 properties:
                   game:
-                    $ref: '#/components/schemas/Game'
+                    $ref: '#/components/schemas/NewGame'
+                example:
+                  id: 123e4567-e89b-12d3-a456-426614174000
+                  dieSize: 6
+                  startingHP: 20
+                  startedAt: null
+                  winnerId: null
 
   /games/{id}:
     parameters:
@@ -56,6 +84,7 @@ paths:
           format: uuid
     get:
       summary: Get game details
+      description: Returns the details of a game, including the game's players and turns.
       operationId: showGame
       responses:
         '200':
@@ -80,6 +109,7 @@ paths:
           format: uuid
     post:
       summary: Join an existing game
+      description: Joins a game as a player, if the game is not full. This creates a new Player instance for the caller, and returns its ID.
       operationId: joinGame
       requestBody:
         required: true
@@ -100,6 +130,7 @@ paths:
                   yourId:
                     type: string
                     format: uuid
+                    description: The ID of the Player that joined the game. Use it to take turns.
         '400':
           description: Game is full
         '404':
@@ -115,6 +146,7 @@ paths:
           format: uuid
     post:
       summary: Start a game
+      description: Starts a game, selecting the attacker and defender at random. The game will have a `startedAt` timestamp and a new Turn with the attacker and defender players.
       operationId: startGame
       responses:
         '200':
@@ -141,6 +173,10 @@ paths:
           format: uuid
     post:
       summary: Roll the dice for a turn
+      description: |
+        Rolls the die for the player, and returns the result.
+
+        If this is the last roll of the turn (both players have rolled), the game will be updated with the result of the damage dealt. If the defending player died, the winner will be declared in the Game object. Otherwise, a new Turn will be created with the attacker and defender roles switched.
       operationId: roll
       requestBody:
         required: true
@@ -168,7 +204,7 @@ paths:
 
 components:
   schemas:
-    Game:
+    NewGame:
       type: object
       properties:
         id:
@@ -190,14 +226,26 @@ components:
           type: string
           format: uuid
           nullable: true
-        players:
-          type: array
-          items:
-            $ref: '#/components/schemas/Player'
-        turns:
-          type: array
-          items:
-            $ref: '#/components/schemas/Turn'
+
+    ListGame:
+      allOf:
+        - $ref: '#/components/schemas/NewGame'
+        - type: object
+          properties:
+            players:
+              type: array
+              items:
+                $ref: '#/components/schemas/Player'
+
+    Game:
+      allOf:
+        - $ref: '#/components/schemas/ListGame'
+        - type: object
+          properties:
+            turns:
+              type: array
+              items:
+                $ref: '#/components/schemas/Turn'
 
     Player:
       type: object
@@ -252,6 +300,7 @@ components:
       properties:
         name:
           type: string
+          description: The name of the player.
 
     RollRequest:
       type: object

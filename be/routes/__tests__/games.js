@@ -6,23 +6,46 @@ const Game = require('../../models/game')
 const Player = require('../../models/player')
 const { first, every, map, find } = require('lodash')
 
+describe('GET /games', () => {
+  it('returns a list of games', async () => {
+    const { body, status } = await request(app.callback()).get('/games')
+    expect(status).toBe(200)
+    expect(body.games).toEqual([])
+  })
+
+  it('returns the games in descending order of creation', async () => {
+    const games = await Promise.all([
+      Game.create({ createdAt: new Date(Date.now() - 1000) }),
+      Game.create({ createdAt: new Date(Date.now() - 500) }),
+      Game.create({ createdAt: new Date(Date.now() - 2000) })
+    ])
+
+    const { body, status } = await request(app.callback()).get('/games')
+    expect(status).toBe(200)
+    expect(body.games).toHaveLength(3)
+    expect(body.games[0].id).toBe(games[1].id)
+    expect(body.games[1].id).toBe(games[0].id)
+    expect(body.games[2].id).toBe(games[2].id)
+  })
+})
+
 describe('POST /games', () => {
   it('creates a game', async () => {
-    const response = await request(app.callback()).post('/games')
-    expect(response.status).toBe(200)
-    expect(response.body.game).toBeDefined()
-    expect(response.body.game).toHaveProperty('id')
-    expect(response.body.game).toHaveProperty('dieSize', 6)
-    expect(response.body.game).toHaveProperty('startingHP', 20)
+    const { body, status } = await request(app.callback()).post('/games')
+    expect(status).toBe(200)
+    expect(body.game).toBeDefined()
+    expect(body.game).toHaveProperty('id')
+    expect(body.game).toHaveProperty('dieSize', 6)
+    expect(body.game).toHaveProperty('startingHP', 20)
   })
 
   it('accepts a dieSize and startingHP', async () => {
-    const response = await request(app.callback()).post('/games').send({ dieSize: 10, startingHP: 100 })
-    expect(response.status).toBe(200)
-    expect(response.body.game).toBeDefined()
-    expect(response.body.game).toHaveProperty('id')
-    expect(response.body.game).toHaveProperty('dieSize', 10)
-    expect(response.body.game).toHaveProperty('startingHP', 100)
+    const { body, status } = await request(app.callback()).post('/games').send({ dieSize: 10, startingHP: 100 })
+    expect(status).toBe(200)
+    expect(body.game).toBeDefined()
+    expect(body.game).toHaveProperty('id')
+    expect(body.game).toHaveProperty('dieSize', 10)
+    expect(body.game).toHaveProperty('startingHP', 100)
   })
 })
 

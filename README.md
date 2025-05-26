@@ -1,10 +1,42 @@
-# Node.js template
+# Dice Game - Full Fabric Frontend Code Challenge
 
-This is a Node.js project.
+This repo provides the foundation for a Full Fabric Frontend code interview. It includes a fully-functional server with an API for creating, joining, playing and winning a turn-based dice game between two players. It also includes the basic scaffolding for a React-based interface.
 
-Add your [configuration](https://codesandbox.io/docs/projects/learn/setting-up/tasks) to optimize it for [CodeSandbox](https://codesandbox.io/p/dashboard).
+We also provide a [Development Containers](https://containers.dev/) definition to make it easier to fork, clone, and start coding immediately.
 
-## Resources
+## The Game
 
-- [CodeSandbox — Docs](https://codesandbox.io/docs/learn)
-- [CodeSandbox — Discord](https://discord.gg/Ggarp3pX5H)
+The game is turn-based, strictly between two players. Players take turns attacking or defending against each-other by rolling dice; any damage dealt is decremented from the defending player's HP, until one of them reaches 0, at which point a winner is declared and the game ends.
+
+The rules are as follows:
+
+- A game must have two players.
+- Each player starts with the same HP, which defaults to 20.
+- A game is played with a single N-sided die, which defaults to 6 sides.
+- The game starts by selecting the attacker and defender at random.
+- Each turn, each player rolls the die once.
+- The rolls determine the attack and defense values, depending on the player's role that turn.
+- If the attack value is greater than the defense value, the defending player takes damage equal to the difference between the two values.
+- After damage is dealt, and if all players are still alive (HP > 0) their roles are switched.
+- The players continue taking turns attacking and defending until one of them dies and is declared the winner.
+
+## The Challenge
+
+During the interview you will be leading a pair-programming-like session where you will design and implement a visual interface for the game in React. You are expected to use the REST API implemented in this repo to manage the game's state, leaving you responsible only for presentational decisions.
+
+The API is described [here](), or by accessing `/docs` on your development server. An OpenAPI file is also available by accessing `/openapi.yaml`.
+
+The UI you design should allow for:
+
+- Creating a game with optionally custom player HP and die sides.
+- Listing available games.
+- Joining a non-full game.
+- Taking a turn (rolling the die).
+- Showing the current state of the game and each player's.
+- Displaying the winner if one has been found.
+
+You're not expected to come up with an extremely stylish UI (though you may build one if that's your wish) but you should concern yourself with basic design principles (whitespace, alignment, etc.) and the user's experience.
+
+## Getting Started
+
+TBD
