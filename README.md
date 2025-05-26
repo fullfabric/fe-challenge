@@ -43,6 +43,8 @@ You're not expected to come up with an extremely stylish UI (though you may buil
 
 The easiest way to start working on this challenge is to run it on a GitHub Codespace. This will automatically set up everything you need to run the development server, and start it when you attach a session. Browser reloading and code change watching will be set up for you.
 
+Note: due to platform limitations, the Port Visibility for the process on port 8081 must be set to Public.
+
 ### Locally
 
 If you prefer to run this locally, you can:
@@ -52,3 +54,9 @@ If you prefer to run this locally, you can:
 3. `yarn install`
 4. `yarn start`
 5. Open a browser on http://localhost:8080
+
+## Writing Code
+
+The frontend code is under `fe/src`; the entry point for the app is in `fe/src/app.sj`. You can explore the API code under `be` if you wish.
+
+During the interview you may install any packages, such as React libs, design systems, etc. that you wish.

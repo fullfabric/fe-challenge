@@ -49,7 +49,7 @@ export function App() {
               ))
             ) : (
               <tr>
-                <td colSpan={2}>No games yet</td>
+                <td colSpan={4}>No games yet</td>
               </tr>
             )}
           </tbody>
