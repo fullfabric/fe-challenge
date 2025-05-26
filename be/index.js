@@ -9,10 +9,8 @@ const app = new Koa()
 app.use(async (ctx, next) => {
   await next()
 
-  const rt = ctx.response.get('X-Response-Time')
-
   if (process.env.NODE_ENV !== 'test') {
-    console.log(`${ctx.method} ${ctx.url} - ${rt}`)
+    console.log(`${ctx.method} ${ctx.url}`)
   }
 })
 

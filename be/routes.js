@@ -19,4 +19,9 @@ router.get('/docs', async (ctx) => {
   ctx.body = await fs.readFile(path.join(__dirname, '..', 'docs', 'index.html'), 'utf8')
 })
 
+router.get('/', async (ctx) => {
+  ctx.type = 'text/html'
+  ctx.body = await fs.readFile(path.join(__dirname, '..', 'fe', 'dist', 'index.html'), 'utf8')
+})
+
 module.exports = router.routes()
