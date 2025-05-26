@@ -20,7 +20,7 @@ module.exports = (async () => {
     const portForwardingDomain = process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
     const origin = `https://${codespaceName}-8080.${portForwardingDomain}`
 
-    app.use(cors({ origin }))
+    app.use(cors({ origin, allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH', 'OPTIONS'] }))
 
     console.log(`CORS enabled for ${origin}`)
   }
