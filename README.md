@@ -57,6 +57,6 @@ If you prefer to run this locally, you can:
 
 ## Writing Code
 
-The frontend code is under `fe/src`; the entry point for the app is in `fe/src/app.sj`. You can explore the API code under `be` if you wish.
+The frontend code is under `fe/src`; the entry point for the app is in `fe/src/App.js`. You can explore the API code under `be` if you wish.
 
 During the interview you may install any packages, such as React libs, design systems, etc. that you wish.
