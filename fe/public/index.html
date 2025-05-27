@@ -1,30 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
 
-<head>
-  <meta charset="utf-8" />
+    <link rel="icon" href="%FRONTEND_HOST%/dice.ico" />
 
-  <link rel="icon" href="%FRONTEND_HOST%/dice.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="manifest" href="%FRONTEND_HOST%/manifest.json" />
 
-  <link rel="manifest" href="%FRONTEND_HOST%/manifest.json" />
+    <title>Dice Game</title>
+  </head>
 
-  <title>Dice Game</title>
-</head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
 
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+    <link href="%FRONTEND_HOST%/index.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="%FRONTEND_HOST%/index.js"></script>
 
-  <link href="%FRONTEND_HOST%/index.css" media="all" rel="stylesheet" type="text/css">
-  <script src="%FRONTEND_HOST%/index.js"></script>
-
-  <script>
-    new EventSource('%FRONTEND_HOST%/esbuild').addEventListener('change', () => location.reload())
-  </script>
-</body>
-
+    <script>
+      new EventSource('%FRONTEND_HOST%/esbuild').addEventListener('change', () => location.reload())
+    </script>
+  </body>
 </html>

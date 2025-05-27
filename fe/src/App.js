@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { games as fetchGames, createGame } from './api'
+import { createGame, games as fetchGames } from './api'
 
-import styles from './app/styles.module.scss'
+import styles from './App/styles.module.scss'
 
 export function App() {
   const [games, setGames] = useState([])

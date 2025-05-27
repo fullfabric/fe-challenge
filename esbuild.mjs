@@ -1,9 +1,11 @@
-import * as esbuild from 'esbuild'
 import fs from 'fs'
+
+import * as esbuild from 'esbuild'
 import copyStaticFiles from 'esbuild-copy-static-files'
 import { postcssModules, sassPlugin } from 'esbuild-sass-plugin'
 
 const env = process.env.NODE_ENV || 'development'
+const frontendHost = serverHost().replace('8080', '8081')
 
 const plugins = [
   sassPlugin({ filter: /\.module\.s?css$/, transform: postcssModules({}) }),
@@ -13,7 +15,7 @@ const plugins = [
     dest: './fe/dist',
     recursive: false
   }),
-  setFrontendHost(serverHost().replace('8080', '8081'))
+  setFrontendHost(frontendHost)
 ]
 
 const esbuildContext = {
@@ -37,7 +39,7 @@ if (process.argv.includes('--watch')) {
   await ctx.watch()
   await ctx.serve({ servedir: 'fe/dist', port: 8081, cors: { origin: serverHost() } })
 
-  console.log(`Serving assets on http://localhost:8081 | live reloading on ${serverHost()}`)
+  console.log(`Serving assets on ${frontendHost} | live reloading on ${serverHost()}`)
 } else {
   console.log(`Building ${env} build...`)
 
@@ -55,8 +57,6 @@ function setFrontendHost(host) {
         if (errors.length > 0) {
           return console.warn('[setFrontendHost] Build completed with errors, skipping setting frontend host.')
         }
-
-        console.log('[setFrontendHost] Setting frontend host to', host, { env })
 
         const indexFile = 'fe/dist/index.html'
         const indexFileContent = fs.readFileSync(indexFile, 'utf-8').replaceAll(/%FRONTEND_HOST%/g, host)
