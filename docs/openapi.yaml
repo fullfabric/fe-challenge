@@ -130,7 +130,7 @@ paths:
                   yourId:
                     type: string
                     format: uuid
-                    description: The ID of the Player that joined the game. Use it to take turns.
+                    description: The ID of the Player that joined the game. Use it to take turns rolling the dice.
         '400':
           description: Game is full
         '404':
@@ -158,6 +158,27 @@ paths:
                 properties:
                   game:
                     $ref: '#/components/schemas/Game'
+                example:
+                  game:
+                    id: 123e4567-e89b-12d3-a456-426614174000
+                    dieSize: 6
+                    startingHP: 20
+                    startedAt: '2025-05-30T12:00:00Z'
+                    winnerId: null
+                    players:
+                      - id: 7720ce89-c6fc-4bd9-a970-73b903bf0316
+                        name: 'Player 1'
+                        hp: 20
+                      - id: c7e4f89a-c61d-4968-b4f2-4de9c8f340a4
+                        name: 'Player 2'
+                        hp: 20
+                    turns:
+                      - id: ad4d88f5-9d8b-4f87-9686-8ea87e242259
+                        attackerId: 7720ce89-c6fc-4bd9-a970-73b903bf0316
+                        defenderId: c7e4f89a-c61d-4968-b4f2-4de9c8f340a4
+                        attackRoll: null
+                        defenseRoll: null
+                        createdAt: '2025-05-30T12:00:00Z'
         '400':
           description: Not enough players or game already started
         '404':
