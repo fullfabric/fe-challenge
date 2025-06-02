@@ -28,7 +28,9 @@ const esbuildContext = {
   sourcemap: true,
   format: 'iife',
   target: ['chrome84', 'firefox78', 'safari12', 'edge44', 'opera66'],
-  publicPath: '/'
+  publicPath: '/',
+  jsx: 'automatic',
+  jsxImportSource: 'react'
 }
 
 const ctx = await esbuild.context(esbuildContext)
