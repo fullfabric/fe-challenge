@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { createGame, games as fetchGames } from './api'
+import { createGame, listGames } from './api'
 
 import styles from './App/styles.module.scss'
 
@@ -9,7 +9,7 @@ export function App() {
 
   useEffect(() => {
     const loadGames = async () => {
-      const { games } = await fetchGames()
+      const { games } = await listGames()
       setGames(games)
     }
 
