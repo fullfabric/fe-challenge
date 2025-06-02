@@ -12,7 +12,7 @@ async function createGame(ctx) {
 }
 
 async function listGames(ctx) {
-  const games = await Game.findAll({ order: [['createdAt', 'DESC']] })
+  const games = await Game.findAll({ include: ['players'], order: [['createdAt', 'DESC']] })
   ctx.body = { games }
 }
 

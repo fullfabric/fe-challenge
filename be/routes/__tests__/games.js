@@ -26,6 +26,13 @@ describe('GET /games', () => {
     expect(body.games[0].id).toBe(games[1].id)
     expect(body.games[1].id).toBe(games[0].id)
     expect(body.games[2].id).toBe(games[2].id)
+
+    body.games.forEach((game) => {
+      expect(game).toHaveProperty('id')
+      expect(game).toHaveProperty('dieSize', 6)
+      expect(game).toHaveProperty('startingHP', 20)
+      expect(game).toHaveProperty('players', [])
+    })
   })
 })
 
