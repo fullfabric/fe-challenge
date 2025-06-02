@@ -296,9 +296,11 @@ components:
         attackRoll:
           type: integer
           nullable: true
+          minimum: 1
         defenseRoll:
           type: integer
           nullable: true
+          minimum: 1
         createdAt:
           type: string
           format: date-time
