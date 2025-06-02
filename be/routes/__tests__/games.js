@@ -90,13 +90,15 @@ describe('POST /games/:id/join', () => {
   })
 
   it('creates a new player assigned to the game, returning its ID', async () => {
-    const { body, status } = await request(app.callback()).post(`/games/${game.id}/join`).send({ name: 'John Doe' })
+    const { body, status } = await request(app.callback())
+      .post(`/games/${game.id}/join`)
+      .send({ playerName: 'John Doe' })
 
     expect(status).toBe(200)
 
-    expect(body.yourId).toBeDefined()
+    expect(body.playerId).toBeDefined()
 
-    const player = await Player.findByPk(body.yourId)
+    const player = await Player.findByPk(body.playerId)
     expect(player).toBeDefined()
     expect(player.name).toBe('John Doe')
     expect(player.hp).toBe(20)
@@ -104,7 +106,9 @@ describe('POST /games/:id/join', () => {
   })
 
   it('returns the game with the player', async () => {
-    const { status, body } = await request(app.callback()).post(`/games/${game.id}/join`).send({ name: 'John Doe' })
+    const { status, body } = await request(app.callback())
+      .post(`/games/${game.id}/join`)
+      .send({ playerName: 'John Doe' })
 
     expect(status).toBe(200)
     expect(body.game).toBeDefined()
@@ -118,8 +122,10 @@ describe('POST /games/:id/join', () => {
   })
 
   it('can add a second player', async () => {
-    await request(app.callback()).post(`/games/${game.id}/join`).send({ name: 'John Doe' })
-    const { status, body } = await request(app.callback()).post(`/games/${game.id}/join`).send({ name: 'Jane Doe' })
+    await request(app.callback()).post(`/games/${game.id}/join`).send({ playerName: 'John Doe' })
+    const { status, body } = await request(app.callback())
+      .post(`/games/${game.id}/join`)
+      .send({ playerName: 'Jane Doe' })
 
     expect(status).toBe(200)
     expect(body.game).toBeDefined()
@@ -131,12 +137,12 @@ describe('POST /games/:id/join', () => {
   })
 
   it('errors out when adding a third player', async () => {
-    await request(app.callback()).post(`/games/${game.id}/join`).send({ name: 'John Doe' })
-    await request(app.callback()).post(`/games/${game.id}/join`).send({ name: 'Jane Doe' })
+    await request(app.callback()).post(`/games/${game.id}/join`).send({ playerName: 'John Doe' })
+    await request(app.callback()).post(`/games/${game.id}/join`).send({ playerName: 'Jane Doe' })
     const { status, body } = await request(app.callback())
       .post(`/games/${game.id}/join`)
       .set('Accept', 'application/json')
-      .send({ name: 'Luise Doe' })
+      .send({ playerName: 'Luise Doe' })
 
     expect(status).toBe(400)
     expect(body.error.message).toBe('Game is full')
@@ -146,7 +152,9 @@ describe('POST /games/:id/join', () => {
     game.startingHP = 10
     await game.save()
 
-    const { status, body } = await request(app.callback()).post(`/games/${game.id}/join`).send({ name: 'Luise Doe' })
+    const { status, body } = await request(app.callback())
+      .post(`/games/${game.id}/join`)
+      .send({ playerName: 'Luise Doe' })
 
     expect(status).toBe(200)
     expect(body.game.players[0]).toHaveProperty('hp', 10)

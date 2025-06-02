@@ -11,7 +11,7 @@ const createGameSchema = Joi.object({
 })
 
 const joinGameSchema = Joi.object({
-  name: Joi.string().required()
+  playerName: Joi.string().required()
 })
 
 const rollSchema = Joi.object({
