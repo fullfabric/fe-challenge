@@ -1,10 +1,10 @@
 export async function listGames() {
-  const response = await fetch('/games')
+  const response = await fetch('/api/games')
   return await response.json()
 }
 
 export async function createGame(body = {}) {
-  const response = await fetch('/games', {
+  const response = await fetch('/api/games', {
     method: 'POST',
     body: JSON.stringify(body),
     headers: { 'Content-Type': 'application/json' }
@@ -14,12 +14,12 @@ export async function createGame(body = {}) {
 }
 
 export async function getGame(gameId) {
-  const response = await fetch(`/games/${gameId}`)
+  const response = await fetch(`/api/games/${gameId}`)
   return await response.json()
 }
 
 export async function joinGame(gameId, playerName) {
-  const response = await fetch(`/games/${gameId}/join`, {
+  const response = await fetch(`/api/games/${gameId}/join`, {
     method: 'POST',
     body: JSON.stringify({ playerName }),
     headers: { 'Content-Type': 'application/json' }
@@ -29,7 +29,7 @@ export async function joinGame(gameId, playerName) {
 }
 
 export async function startGame(gameId) {
-  const response = await fetch(`/games/${gameId}/start`, {
+  const response = await fetch(`/api/games/${gameId}/start`, {
     method: 'POST'
   })
 
@@ -37,7 +37,7 @@ export async function startGame(gameId) {
 }
 
 export async function roll(gameId) {
-  const response = await fetch(`/games/${gameId}/roll`, {
+  const response = await fetch(`/api/games/${gameId}/roll`, {
     method: 'POST'
   })
 

@@ -26,7 +26,7 @@ servers:
     description: Local server
 
 paths:
-  /games:
+  /api/games:
     get:
       summary: List all games
       description: Returns a list of all games in descending order of creation. Includes the game's players in the response.
@@ -75,7 +75,7 @@ paths:
                     startedAt: null
                     winnerId: null
 
-  /games/{id}:
+  /api/games/{id}:
     parameters:
       - name: id
         in: path
@@ -100,7 +100,7 @@ paths:
         '404':
           description: Game not found
 
-  /games/{id}/join:
+  /api/games/{id}/join:
     parameters:
       - name: id
         in: path
@@ -137,7 +137,7 @@ paths:
         '404':
           description: Game not found
 
-  /games/{id}/start:
+  /api/games/{id}/start:
     parameters:
       - name: id
         in: path
@@ -185,7 +185,7 @@ paths:
         '404':
           description: Game not found
 
-  /games/{id}/roll:
+  /api/games/{id}/roll:
     parameters:
       - name: id
         in: path

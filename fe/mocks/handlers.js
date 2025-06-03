@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 
 const handlers = [
-  http.get('/games', () => {
+  http.get('/api/games', () => {
     return HttpResponse.json({
       games: [
         {

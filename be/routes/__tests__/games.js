@@ -6,9 +6,9 @@ const Game = require('../../models/game')
 const Player = require('../../models/player')
 const { first, every, map, find } = require('lodash')
 
-describe('GET /games', () => {
+describe('GET /api/games', () => {
   it('returns a list of games', async () => {
-    const { body, status } = await request(app.callback()).get('/games')
+    const { body, status } = await request(app.callback()).get('/api/games')
     expect(status).toBe(200)
     expect(body.games).toEqual([])
   })
@@ -20,7 +20,7 @@ describe('GET /games', () => {
       Game.create({ createdAt: new Date(Date.now() - 2000) })
     ])
 
-    const { body, status } = await request(app.callback()).get('/games')
+    const { body, status } = await request(app.callback()).get('/api/games')
     expect(status).toBe(200)
     expect(body.games).toHaveLength(3)
     expect(body.games[0].id).toBe(games[1].id)
@@ -36,9 +36,9 @@ describe('GET /games', () => {
   })
 })
 
-describe('POST /games', () => {
+describe('POST /api/games', () => {
   it('creates a game', async () => {
-    const { body, status } = await request(app.callback()).post('/games')
+    const { body, status } = await request(app.callback()).post('/api/games')
     expect(status).toBe(200)
     expect(body.game).toBeDefined()
     expect(body.game).toHaveProperty('id')
@@ -47,7 +47,7 @@ describe('POST /games', () => {
   })
 
   it('accepts a dieSize and startingHP', async () => {
-    const { body, status } = await request(app.callback()).post('/games').send({ dieSize: 10, startingHP: 100 })
+    const { body, status } = await request(app.callback()).post('/api/games').send({ dieSize: 10, startingHP: 100 })
     expect(status).toBe(200)
     expect(body.game).toBeDefined()
     expect(body.game).toHaveProperty('id')
@@ -56,7 +56,7 @@ describe('POST /games', () => {
   })
 })
 
-describe('GET /games/:id', () => {
+describe('GET /api/games/:id', () => {
   let game
 
   beforeEach(async () => {
@@ -64,7 +64,7 @@ describe('GET /games/:id', () => {
   })
 
   it('returns the game', async () => {
-    const { body, status } = await request(app.callback()).get(`/games/${game.id}`)
+    const { body, status } = await request(app.callback()).get(`/api/games/${game.id}`)
     expect(status).toBe(200)
     expect(body.game).toBeDefined()
     expect(body.game).toHaveProperty('id')
@@ -75,14 +75,14 @@ describe('GET /games/:id', () => {
   })
 
   it('returns 404 if the game does not exist', async () => {
-    const { body, status } = await request(app.callback()).get(`/games/123`)
+    const { body, status } = await request(app.callback()).get(`/api/games/123`)
 
     expect(status).toBe(404)
     expect(body.error.message).toBe('Model not found')
   })
 })
 
-describe('POST /games/:id/join', () => {
+describe('POST /api/games/:id/join', () => {
   let game
 
   beforeEach(async () => {
@@ -91,7 +91,7 @@ describe('POST /games/:id/join', () => {
 
   it('creates a new player assigned to the game, returning its ID', async () => {
     const { body, status } = await request(app.callback())
-      .post(`/games/${game.id}/join`)
+      .post(`/api/games/${game.id}/join`)
       .send({ playerName: 'John Doe' })
 
     expect(status).toBe(200)
@@ -107,7 +107,7 @@ describe('POST /games/:id/join', () => {
 
   it('returns the game with the player', async () => {
     const { status, body } = await request(app.callback())
-      .post(`/games/${game.id}/join`)
+      .post(`/api/games/${game.id}/join`)
       .send({ playerName: 'John Doe' })
 
     expect(status).toBe(200)
@@ -122,9 +122,9 @@ describe('POST /games/:id/join', () => {
   })
 
   it('can add a second player', async () => {
-    await request(app.callback()).post(`/games/${game.id}/join`).send({ playerName: 'John Doe' })
+    await request(app.callback()).post(`/api/games/${game.id}/join`).send({ playerName: 'John Doe' })
     const { status, body } = await request(app.callback())
-      .post(`/games/${game.id}/join`)
+      .post(`/api/games/${game.id}/join`)
       .send({ playerName: 'Jane Doe' })
 
     expect(status).toBe(200)
@@ -137,10 +137,10 @@ describe('POST /games/:id/join', () => {
   })
 
   it('errors out when adding a third player', async () => {
-    await request(app.callback()).post(`/games/${game.id}/join`).send({ playerName: 'John Doe' })
-    await request(app.callback()).post(`/games/${game.id}/join`).send({ playerName: 'Jane Doe' })
+    await request(app.callback()).post(`/api/games/${game.id}/join`).send({ playerName: 'John Doe' })
+    await request(app.callback()).post(`/api/games/${game.id}/join`).send({ playerName: 'Jane Doe' })
     const { status, body } = await request(app.callback())
-      .post(`/games/${game.id}/join`)
+      .post(`/api/games/${game.id}/join`)
       .set('Accept', 'application/json')
       .send({ playerName: 'Luise Doe' })
 
@@ -153,7 +153,7 @@ describe('POST /games/:id/join', () => {
     await game.save()
 
     const { status, body } = await request(app.callback())
-      .post(`/games/${game.id}/join`)
+      .post(`/api/games/${game.id}/join`)
       .send({ playerName: 'Luise Doe' })
 
     expect(status).toBe(200)
@@ -161,7 +161,7 @@ describe('POST /games/:id/join', () => {
   })
 })
 
-describe('POST /games/:id/start', () => {
+describe('POST /api/games/:id/start', () => {
   let game, players
 
   beforeEach(async () => {
@@ -172,7 +172,7 @@ describe('POST /games/:id/start', () => {
   it('starts the game', async () => {
     expect(game.isStarted()).toBe(false)
 
-    const { status, body } = await request(app.callback()).post(`/games/${game.id}/start`)
+    const { status, body } = await request(app.callback()).post(`/api/games/${game.id}/start`)
 
     expect(status).toBe(200)
     expect(body.game).toHaveProperty('startedAt')
@@ -182,7 +182,7 @@ describe('POST /games/:id/start', () => {
   })
 
   it('adds a new turn to the game with randomly selected attacker and defender', async () => {
-    const { status, body } = await request(app.callback()).post(`/games/${game.id}/start`)
+    const { status, body } = await request(app.callback()).post(`/api/games/${game.id}/start`)
 
     expect(status).toBe(200)
     expect(body.game).toBeDefined()
@@ -198,8 +198,8 @@ describe('POST /games/:id/start', () => {
   })
 
   it('fails on an already started game', async () => {
-    await request(app.callback()).post(`/games/${game.id}/start`)
-    const { status, body } = await request(app.callback()).post(`/games/${game.id}/start`)
+    await request(app.callback()).post(`/api/games/${game.id}/start`)
+    const { status, body } = await request(app.callback()).post(`/api/games/${game.id}/start`)
 
     expect(status).toBe(400)
     expect(body.error.message).toBe('Game already started')
@@ -208,14 +208,14 @@ describe('POST /games/:id/start', () => {
   it('fails on a game with less than 2 players', async () => {
     await players[0].destroy()
 
-    const { status, body } = await request(app.callback()).post(`/games/${game.id}/start`)
+    const { status, body } = await request(app.callback()).post(`/api/games/${game.id}/start`)
 
     expect(status).toBe(400)
     expect(body.error.message).toBe('Not enough players')
   })
 })
 
-describe('POST /games/:id/roll', () => {
+describe('POST /api/games/:id/roll', () => {
   let game, players
 
   beforeEach(async () => {
@@ -226,7 +226,7 @@ describe('POST /games/:id/roll', () => {
 
   it('rolls a die for the player', async () => {
     const { status, body } = await request(app.callback())
-      .post(`/games/${game.id}/roll`)
+      .post(`/api/games/${game.id}/roll`)
       .send({ playerId: players[0].id })
 
     expect(status).toBe(200)
@@ -237,7 +237,7 @@ describe('POST /games/:id/roll', () => {
 
   it('saves the roll in the turn for the right player', async () => {
     let { status, body } = await request(app.callback())
-      .post(`/games/${game.id}/roll`)
+      .post(`/api/games/${game.id}/roll`)
       .send({ playerId: players[0].id })
 
     const rolled = body.roll
@@ -245,7 +245,9 @@ describe('POST /games/:id/roll', () => {
     expect(status).toBe(200)
     expect(body.game.turns[0]).toHaveProperty('attackRoll', rolled)
     expect(body.game.turns[0]).toHaveProperty('defenseRoll', null)
-    ;({ status, body } = await request(app.callback()).post(`/games/${game.id}/roll`).send({ playerId: players[1].id }))
+    ;({ status, body } = await request(app.callback())
+      .post(`/api/games/${game.id}/roll`)
+      .send({ playerId: players[1].id }))
 
     expect(status).toBe(200)
     expect(body.game.turns[0]).toHaveProperty('attackRoll', rolled)
@@ -254,7 +256,7 @@ describe('POST /games/:id/roll', () => {
 
   it('accepts rolls from the defender first', async () => {
     const { status, body } = await request(app.callback())
-      .post(`/games/${game.id}/roll`)
+      .post(`/api/games/${game.id}/roll`)
       .send({ playerId: players[1].id })
 
     expect(status).toBe(200)
@@ -267,13 +269,15 @@ describe('POST /games/:id/roll', () => {
     await game.save()
 
     let { status, body } = await request(app.callback())
-      .post(`/games/${game.id}/roll`)
+      .post(`/api/games/${game.id}/roll`)
       .send({ playerId: players[0].id })
 
     expect(status).toBe(200)
     expect(body.roll).toBeGreaterThan(0)
     expect(body.roll).toBeLessThan(3)
-    ;({ status, body } = await request(app.callback()).post(`/games/${game.id}/roll`).send({ playerId: players[1].id }))
+    ;({ status, body } = await request(app.callback())
+      .post(`/api/games/${game.id}/roll`)
+      .send({ playerId: players[1].id }))
 
     expect(status).toBe(200)
     expect(body.roll).toBeGreaterThan(0)
@@ -281,16 +285,18 @@ describe('POST /games/:id/roll', () => {
   })
 
   it('fails if the player is not part of the turn', async () => {
-    const { status, body } = await request(app.callback()).post(`/games/${game.id}/roll`).send({ playerId: uuidv4() })
+    const { status, body } = await request(app.callback())
+      .post(`/api/games/${game.id}/roll`)
+      .send({ playerId: uuidv4() })
 
     expect(status).toBe(400)
     expect(body.error.message).toBe("You're not part of this game")
   })
 
   it('fails if the player has already played this turn', async () => {
-    await request(app.callback()).post(`/games/${game.id}/roll`).send({ playerId: players[0].id })
+    await request(app.callback()).post(`/api/games/${game.id}/roll`).send({ playerId: players[0].id })
     const { status, body } = await request(app.callback())
-      .post(`/games/${game.id}/roll`)
+      .post(`/api/games/${game.id}/roll`)
       .send({ playerId: players[0].id })
 
     expect(status).toBe(400)
@@ -301,8 +307,8 @@ describe('POST /games/:id/roll', () => {
     let body
 
     beforeEach(async () => {
-      await request(app.callback()).post(`/games/${game.id}/roll`).send({ playerId: players[0].id })
-      ;({ body } = await request(app.callback()).post(`/games/${game.id}/roll`).send({ playerId: players[1].id }))
+      await request(app.callback()).post(`/api/games/${game.id}/roll`).send({ playerId: players[0].id })
+      ;({ body } = await request(app.callback()).post(`/api/games/${game.id}/roll`).send({ playerId: players[1].id }))
     })
 
     it('adds a new turn to the game with swapped roles', async () => {
@@ -335,8 +341,8 @@ describe('POST /games/:id/roll', () => {
       while (
         await Promise.all([players[0].reload(), players[1].reload()]).then((ps) => every(ps, (p) => p.isAlive()))
       ) {
-        await request(app.callback()).post(`/games/${game.id}/roll`).send({ playerId: players[0].id })
-        ;({ body } = await request(app.callback()).post(`/games/${game.id}/roll`).send({ playerId: players[1].id }))
+        await request(app.callback()).post(`/api/games/${game.id}/roll`).send({ playerId: players[0].id })
+        ;({ body } = await request(app.callback()).post(`/api/games/${game.id}/roll`).send({ playerId: players[1].id }))
       }
     })
 
