@@ -1,15 +1,23 @@
 import React from 'react'
+import { createRoutesStub } from 'react-router'
 
 import { render, screen } from '@testing-library/react'
 
-import { App } from '../App'
+import GameList, { action as gameListAction, loader as gameListLoader } from '../GameList'
 
-describe('App', () => {
+describe('GameList', () => {
+  const RouteStub = createRoutesStub([
+    {
+      path: '/',
+      Component: GameList,
+      action: gameListAction,
+      loader: gameListLoader,
+      HydrateFallback: () => null
+    }
+  ])
+
   it('renders a list of games', async () => {
-    render(<App />)
-
-    const heading = await screen.findByRole('heading', { name: 'Dice Game' })
-    expect(heading).toBeInTheDocument()
+    render(<RouteStub initialEntries={['/']} />)
 
     const table = await screen.findByRole('table')
     expect(table).toBeInTheDocument()
