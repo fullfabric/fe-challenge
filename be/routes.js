@@ -7,7 +7,7 @@ const games = require('./routes/games')
 
 const router = new Router()
 
-router.use('/games', games)
+router.use('/api/games', games)
 
 router.get('/openapi.yaml', async (ctx) => {
   ctx.type = 'text/yaml'
@@ -19,7 +19,7 @@ router.get('/docs', async (ctx) => {
   ctx.body = await fs.readFile(path.join(__dirname, '..', 'docs', 'index.html'), 'utf8')
 })
 
-router.get('/', async (ctx) => {
+router.get('/(.*)', async (ctx) => {
   ctx.type = 'text/html'
   ctx.body = await fs.readFile(path.join(__dirname, '..', 'fe', 'dist', 'index.html'), 'utf8')
 })

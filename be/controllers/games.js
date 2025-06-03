@@ -12,7 +12,7 @@ async function createGame(ctx) {
 }
 
 async function listGames(ctx) {
-  const games = await Game.findAll({ order: [['createdAt', 'DESC']] })
+  const games = await Game.findAll({ include: ['players'], order: [['createdAt', 'DESC']] })
   ctx.body = { games }
 }
 
@@ -36,10 +36,10 @@ async function joinGame(ctx) {
       ctx.throw(400, 'Game is full', { error: 'Game is full' })
     }
 
-    return await game.createPlayer({ ...ctx.request.body, hp: game.startingHP }, { transaction: t })
+    return await game.createPlayer({ name: ctx.request.body.playerName, hp: game.startingHP }, { transaction: t })
   })
 
-  ctx.body = { game: await game.reload({ include: ['players'] }), yourId: newPlayer.id }
+  ctx.body = { game: await game.reload({ include: ['players'] }), playerId: newPlayer.id }
 }
 
 async function startGame(ctx) {

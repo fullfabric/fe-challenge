@@ -26,7 +26,7 @@ servers:
     description: Local server
 
 paths:
-  /games:
+  /api/games:
     get:
       summary: List all games
       description: Returns a list of all games in descending order of creation. Includes the game's players in the response.
@@ -68,13 +68,14 @@ paths:
                   game:
                     $ref: '#/components/schemas/NewGame'
                 example:
-                  id: 123e4567-e89b-12d3-a456-426614174000
-                  dieSize: 6
-                  startingHP: 20
-                  startedAt: null
-                  winnerId: null
+                  game:
+                    id: 123e4567-e89b-12d3-a456-426614174000
+                    dieSize: 6
+                    startingHP: 20
+                    startedAt: null
+                    winnerId: null
 
-  /games/{id}:
+  /api/games/{id}:
     parameters:
       - name: id
         in: path
@@ -99,7 +100,7 @@ paths:
         '404':
           description: Game not found
 
-  /games/{id}/join:
+  /api/games/{id}/join:
     parameters:
       - name: id
         in: path
@@ -127,7 +128,7 @@ paths:
                 properties:
                   game:
                     $ref: '#/components/schemas/Game'
-                  yourId:
+                  playerId:
                     type: string
                     format: uuid
                     description: The ID of the Player that joined the game. Use it to take turns rolling the dice.
@@ -136,7 +137,7 @@ paths:
         '404':
           description: Game not found
 
-  /games/{id}/start:
+  /api/games/{id}/start:
     parameters:
       - name: id
         in: path
@@ -184,7 +185,7 @@ paths:
         '404':
           description: Game not found
 
-  /games/{id}/roll:
+  /api/games/{id}/roll:
     parameters:
       - name: id
         in: path
@@ -295,9 +296,11 @@ components:
         attackRoll:
           type: integer
           nullable: true
+          minimum: 1
         defenseRoll:
           type: integer
           nullable: true
+          minimum: 1
         createdAt:
           type: string
           format: date-time
@@ -317,9 +320,9 @@ components:
     JoinGameRequest:
       type: object
       required:
-        - name
+        - playerName
       properties:
-        name:
+        playerName:
           type: string
           description: The name of the player.
 
