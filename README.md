@@ -22,7 +22,7 @@ The rules are as follows:
 
 ## The Challenge
 
-During the interview you will be leading a pair-programming-like session where you will design and implement a visual interface for the game in React. You are expected to use the REST API implemented in this repo to manage the game's state, leaving you responsible only for presentational decisions.
+During the interview you will be leading a pair-programming-like session where you will design and implement a visual interface for the game in React. You are expected to use the REST API implemented in this repo to manage the game's state and business logic, leaving you responsible only for presentational decisions.
 
 The API is described [here](https://fullfabric.github.io/fe-challenge/), or by accessing `/docs` on your development server. An OpenAPI file is also available by accessing `/openapi.yaml`.
 
@@ -31,11 +31,12 @@ The UI you design should allow for:
 - Creating a game with optionally custom player HP and die sides.
 - Listing available games.
 - Joining a non-full game.
+- Starting a full game.
 - Taking a turn (rolling the die).
 - Showing the current state of the game and each player's.
 - Displaying the winner if one has been found.
 
-You're not expected to come up with an extremely stylish UI (though you may build one if that's your wish) but you should concern yourself with basic design principles (whitespace, alignment, etc.) and the user's experience.
+You're not expected to come up with an extremely stylish UI (though you may build one if that's your wish) but you should concern yourself with basic design principles (whitespace, alignment, etc.) and the user's experience. It is also no necessary that you fully finish the UI during the interview.
 
 ## Getting Started
 
