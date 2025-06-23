@@ -36,9 +36,11 @@ export async function startGame(gameId) {
   return await response.json()
 }
 
-export async function roll(gameId) {
+export async function roll(gameId, playerId) {
   const response = await fetch(`/api/games/${gameId}/roll`, {
-    method: 'POST'
+    method: 'POST',
+    body: JSON.stringify({ playerId }),
+    headers: { 'Content-Type': 'application/json' }
   })
 
   return await response.json()

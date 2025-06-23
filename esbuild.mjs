@@ -4,10 +4,17 @@ import * as esbuild from 'esbuild'
 import copyStaticFiles from 'esbuild-copy-static-files'
 import { postcssModules, sassPlugin } from 'esbuild-sass-plugin'
 
+import postCssPlugin from '@deanc/esbuild-plugin-postcss'
+
 const env = process.env.NODE_ENV || 'development'
 const frontendHost = serverHost().replace('8080', '8081')
 
 const plugins = [
+  postCssPlugin({
+    plugins: [
+      /** tailwindcss */
+    ]
+  }),
   sassPlugin({ filter: /\.module\.s?css$/, transform: postcssModules({}) }),
   sassPlugin({ filter: /\.scss$/ }),
   copyStaticFiles({

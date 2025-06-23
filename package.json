@@ -36,11 +36,13 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.27.4",
+    "@deanc/esbuild-plugin-postcss": "^1.0.2",
     "@fullfabric/eslint-config": "github:fullfabric/eslint-cfg#v1.0.0",
     "@fullfabric/prettier-config": "github:fullfabric/prettier-cfg#v3.0.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "babel-jest": "^30.0.0-beta.3",
     "concurrently": "^9.1.2",
     "esbuild": "^0.25.4",
