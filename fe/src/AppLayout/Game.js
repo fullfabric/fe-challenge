@@ -25,7 +25,7 @@ export default function Game() {
 
       <fetcher.Form action={`/games/${game.id}/join`} method='post'>
         <label htmlFor='playerName'>Player Name</label>
-        <input type='text' name='playerName' placeholder='John Doe' required />
+        <input id='playerName' type='text' name='playerName' placeholder='John Doe' required />
 
         <button type='submit' disabled={fetcher.state !== 'idle'}>
           Join Game
