@@ -11,7 +11,7 @@ module.exports = (async () => {
   console.log('Database synced')
 
   app.listen(8080, () => {
-    console.log('Serving API on http://localhost:8080')
+    console.log('Serving game UI + API on http://localhost:8080')
   })
 
   const codespaceName = process.env.CODESPACE_NAME

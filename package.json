@@ -5,6 +5,10 @@
   "main": "index.js",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.0.0",
+    "yarn": "^1.22.22"
+  },
   "scripts": {
     "start": "npm run redocly && concurrently -c \"blue,green\" \"npm run build:watch\" \"node --watch index.js\"",
     "test": "npm run redocly && jest --watchAll",
