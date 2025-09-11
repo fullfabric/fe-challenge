@@ -35,7 +35,7 @@ const esbuildContext = {
   minify: env === 'production',
   bundle: true,
   sourcemap: true,
-  format: 'iife',
+  format: 'esm',
   target: ['chrome84', 'firefox78', 'safari12', 'edge44', 'opera66'],
   publicPath: '/',
   jsx: 'automatic',
