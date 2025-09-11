@@ -36,6 +36,7 @@
     "react-router": "^7.6.1",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7",
+    "tailwindcss": "^4.1.13",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
@@ -43,6 +44,7 @@
     "@deanc/esbuild-plugin-postcss": "^1.0.2",
     "@fullfabric/eslint-config": "github:fullfabric/eslint-cfg#v1.0.0",
     "@fullfabric/prettier-config": "github:fullfabric/prettier-cfg#v3.0.0",
+    "@tailwindcss/postcss": "^4.1.13",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
@@ -84,7 +86,8 @@
           "extensions": [
             ".js",
             ".jsx",
-            ".json"
+            ".json",
+            ".mjs"
           ],
           "paths": [
             "be"
