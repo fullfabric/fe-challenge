@@ -19,7 +19,7 @@
     <div id="root"></div>
 
     <link href="%FRONTEND_HOST%/index.css" media="all" rel="stylesheet" type="text/css" />
-    <script src="%FRONTEND_HOST%/index.js"></script>
+    <script src="%FRONTEND_HOST%/index.js" type="module"></script>
 
     <script>
       new EventSource('%FRONTEND_HOST%/esbuild').addEventListener('change', () => location.reload())
